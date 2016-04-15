@@ -3,32 +3,42 @@
 
 (def md-parser
   (insta/parser
-   "doc             := section*
-    section         := heading? block+
-    block           := para | blank-line
-    para            := WORD
+   "doc             := (section / block)*
+    section         := heading block*
+    <block>         := para
+    para            := (#'.+' EOL) / EOL
     blank-line      := [WP] EOL
-    <heading>       := h1
-    <heading-title> := para
-    h1              := <'#'> [WP] heading-title [WP] ['#']
+    heading         := h1
+    h1              := <'#'> WP? #'.+' WP? ['#'] EOL
 
     <WORD>     := #'\\S+'
-    WP         := (' ' | '\\t')+
+    <WP>       := #'\\s+'
     EOL        := <['\\r'] '\\n'>
     "))
 
-(md-parser "# title한글\n")
-(md-parser "# 한글제목\nabc\n \nab")
+(md-parser "")
+(md-parser "\n")
+(md-parser "한글   문단\n")
+(md-parser "문단\n두번째 문단.\n\n")
+(md-parser "# title 한글\naoeu\n")
+(md-pareser "# 한글제목\nabc\n \nab")
 
 (def test-parser
   (insta/parser
-   "doc        := para
-    para       := letter+
+   "doc        := section | para | eps
+    section    := h1 para*
+    h1         := '#' para
+    para       := (WORD | WP)* NL
 
-    <letter>   := #'[a-zA-Z0-9]'
-    <WP>       := #'\\s+'
-    <NL>       := ['\\r'] '\\n'
+    WORD       := char (WP | char | '#')*
+    char       := letter | digit
+    letter     := #'[A-Za-z가-힣ㄱ-ㅎ]'
+    digit      := #'[0-9]'
+    WP         := ('\\t' | ' ')+
+    NL         := <['\\r'] '\\n'>
     "))
 
-
-(test-parser "test")
+(test-parser "")
+(test-parser "\n")
+(test-parser "# 타이#틀\n")
+(test-parser "# 제목\ntest 가-나_다라\n\n다음줄\n")
