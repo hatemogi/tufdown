@@ -1,4 +1,4 @@
-(defproject instaparse-practice "0.1.0-SNAPSHOT"
+(defproject 인스타파스-연습 "0.1.0-SNAPSHOT"
   :description "learning to use instaparse"
   :url "https://github.com/hatemogi/instaparse-practice"
   :license {:name "Eclipse Public License"
