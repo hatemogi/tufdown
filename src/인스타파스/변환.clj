@@ -2,8 +2,8 @@
   (:require [인스타파스.블럭 :as 블럭]
             [인스타파스.문장 :as 문장]
             [instaparse.core :as insta]
-            [clojure.test :refer :all]))
-
+            [clojure.test :refer :all])
+  (:import [clojure.lang IPersistentVector ISeq]))
 
 (defn 마크다운 [텍스트]
   (->> 텍스트
@@ -13,27 +13,41 @@
 
 (마크다운 "*강조*큰제목\n====\n일반문장.\n")
 
-(defn ->HTML [트리]
-  (let [태그 (fn [키워드] (case 키워드
-                         :문서   ["" ""]
-                         :큰제목 ["<h1>"   "</h1>"]
-                         :문단   ["<div>"  "</div>"]
-                         :문장   [""       ""]
-                         :기울임 ["<i>"    "</i>"]
-                         [(name 키워드)]))]
-    (if (seq 트리)
-      (cond
-        (vector? 트리)
-        (let [[열기 닫기] (태그 (first 트리))]
-          (str 열기
-               (apply str (map ->HTML (rest 트리)))
-               닫기))
+;;; the code below is heavily influenced by hiccup
 
-        (string? 트리)
-        트리
+(defprotocol HtmlRenderer
+  (render-html [element]))
 
-        :else
-        (throw (IllegalStateException.))))))
+(defn render-element [트리]
+  (if-let [태그 ({:큰제목   "h2"
+                  :작은제목 "h3"
+                  :문단     "div"
+                  :기울임   "i"
+                  :굵게     "em"
+                  } (first 트리))]
+    (str "<" 태그 ">"
+         (render-html (rest 트리))
+         "</" 태그 ">")
+    (render-html (rest 트리))))
 
-(->HTML (마크다운 ""))
-(->HTML (마크다운 "중간*강조*큰제목\n====\n일반문장.\n"))
+(extend-protocol HtmlRenderer
+  IPersistentVector
+  (render-html [this]
+    (render-element this))
+
+  ISeq
+  (render-html [this]
+    (apply str (map render-html this)))
+
+  String
+  (render-html [this] this)
+
+  Object
+  (render-html [this]
+    (str this))
+
+  nil
+  (render-html [this] ""))
+
+(render-html (마크다운 ""))
+(render-html (마크다운 "중간*강조*큰제목\n====\n일반문장.\n"))
