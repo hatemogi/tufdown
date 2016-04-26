@@ -21,31 +21,15 @@
 (declare render-html)
 
 (defn- render-element [[태그 & 내용]]
-  (let [태그맵 {:큰제목   "h2"
-                :작은제목 "h3"
-                :일반목록 "ul"
-                :숫자목록 "ol"
-                :항목     "li"
-                :인용     "blockquote"
-                :원문     "pre"
-                :문단     "div"
-                :문장     "p"
-                :기울임   "i"
-                :굵게     "em"}
-        여닫기 (fn [e]
-                 (if-let [tag (태그맵 e)]
-                   [(str "<" tag ">") (str "</" tag ">")]
-                   ["" ""]))
-        추출 (fn [내부태그]
-               (some (fn [요소]
-                       (if (= 내부태그 (first 요소))
-                         (apply str (rest 요소)))) 내용))]
+  (let [태그맵 {:큰제목 "h2", :작은제목 "h3", :일반목록 "ul", :숫자목록 "ol"
+                :항목 "li", :인용 "blockquote", :원문 "pre", :문단 "div"
+                :문장 "p", :기울임 "i", :굵게 "em"}
+        추출 (fn [tag] (some
+                       (fn [e] (if (= (first e) tag) (apply str (rest e))))
+                       내용))]
     (case 태그
-      :빈줄
-      "<br/>"
-
-      :구분줄
-      "<hr/>"
+      :빈줄   "<br/>"
+      :구분줄 "<hr/>"
 
       :소스코드
       (str "<pre><code" (if-let [언어 (추출 :소스언어)] (str " data-lang=\"" 언어 "\"")) ">"
@@ -53,8 +37,9 @@
            "</code></pre>")
 
       ;; 기본
-      (let [[열기 닫기] (여닫기 태그)]
-        (str 열기 (render-html 내용) 닫기)))))
+      (if-let [tag (태그맵 태그)]
+        (str "<" tag ">" (render-html 내용) "</" tag ">")
+        (render-html 내용)))))
 
 (defn render-html [e]
   (cond
@@ -62,3 +47,5 @@
     (string? e) (escape-html e)
     (seq? e)    (apply str (map render-html e))
     (nil? e)    ""))
+
+;; (render-html (parse "테스트\n==="))
