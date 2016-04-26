@@ -1,18 +1,21 @@
-(ns 인스타파스.변환
-  (:require [인스타파스.블럭 :as 블럭]
-            [인스타파스.문장 :as 문장]
+(ns tufdown.core
+  (:require [tufdown.block :as block]
+            [tufdown.span :as span]
             [instaparse.core :as insta]
             [clojure.test :refer :all]
             [hiccup.util])
   (:import [clojure.lang IPersistentVector ISeq Keyword]))
 
-(defn 마크다운 [텍스트]
-  (->> 텍스트
-       블럭/분석
-       (insta/transform {:문장 (fn [& 글자들]
-                                 (문장/분석 (apply str 글자들)))})))
+(defn make-string-end-with-LF [text]
+  (if (clojure.string/ends-with? text "\n")
+    text
+    (str text "\n")))
 
-(마크다운 "*강조*큰제목\n====\n일반문장.\n")
+(defn parse [text]
+  (->> text
+       block/parse
+       (insta/transform {:문장 (fn [& chars]
+                                 (span/parse (apply str chars)))})))
 
 ;;; the code below is heavily influenced by hiccup
 
@@ -23,18 +26,18 @@
   (열기 [요소])
   (닫기 [요소]))
 
-(def ^:private 태그맵
-  {:큰제목   "h2"
-   :작은제목 "h3"
-   :일반목록 "ul"
-   :숫자목록 "ol"
-   :항목     "li"
-   :인용     "blockquote"
-   :원문     "pre"
-   :문단     "div"
-   :기울임   "i"
-   :굵게     "em"
-   })
+(def ^:private
+  태그맵 {:큰제목   "h2"
+          :작은제목 "h3"
+          :일반목록 "ul"
+          :숫자목록 "ol"
+          :항목     "li"
+          :인용     "blockquote"
+          :원문     "pre"
+          :문단     "div"
+          :문장     "p"
+          :기울임   "i"
+          :굵게     "em"})
 
 (extend-protocol 여닫기
   Keyword
@@ -59,6 +62,12 @@
                        (if (= 내부태그 (first 요소))
                          (apply str (rest 요소)))) 내용))]
     (case 태그
+      :빈줄
+      "<br/>"
+
+      :구분줄
+      "<hr/>"
+
       :소스코드
       (str "<pre><code" (if-let [언어 (추출 :소스언어)] (str " data-lang=\"" 언어 "\"")) ">"
            (render-html (추출 :소스내용))
@@ -88,7 +97,3 @@
 
   nil
   (render-html [this] ""))
-
-;;(render-html (마크다운 ""))
-;;(render-html (마크다운 "```clojure\n(def test <123>)\n```"))
-;;(render-html (마크다운 "중간*강조*큰제목\n====\n일반문장.\n"))
