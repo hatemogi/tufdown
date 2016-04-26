@@ -2,7 +2,6 @@
   (:require [tufdown.block :as block]
             [tufdown.span :as span]
             [instaparse.core :as insta]
-            [clojure.test :refer :all]
             [hiccup.util])
   (:import [clojure.lang IPersistentVector ISeq Keyword]))
 
