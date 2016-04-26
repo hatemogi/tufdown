@@ -1,8 +1,8 @@
 (ns tufdown.core
   (:require [tufdown.block :as block]
             [tufdown.span :as span]
-            [instaparse.core :as insta]
-            [tufdown.util :refer [escape-html]]))
+            [tufdown.util :refer [escape-html]]
+            [instaparse.core :as insta]))
 
 (defn- make-string-end-with-LF [text]
   (if (clojure.string/ends-with? text "\n")
@@ -15,8 +15,6 @@
        block/parse
        (insta/transform {:문장 (fn [& chars]
                                  (span/parse (apply str chars)))})))
-
-;;; the code below is heavily influenced by hiccup
 
 (declare render-html)
 
@@ -46,6 +44,7 @@
     (vector? e) (render-element e)
     (string? e) (escape-html e)
     (seq? e)    (apply str (map render-html e))
-    (nil? e)    ""))
+    (nil? e)    ""
+    :default    (recur (str e))))
 
 ;; (render-html (parse "테스트\n==="))
