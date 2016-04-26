@@ -6,7 +6,8 @@
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [instaparse "1.4.1"]
                  [org.clojure/clojurescript "1.8.40"]
-                 [com.lucasbradstreet/instaparse-cljs "1.4.1.1"]]
+                 [com.lucasbradstreet/instaparse-cljs "1.4.1.1"]
+                 [hiccup "1.0.5"]]
   :plugins [[lein-cljsbuild "1.1.3"]
             [lein-figwheel "0.5.2"]]
   :cljsbuild
