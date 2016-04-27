@@ -20,8 +20,8 @@
 
 (defn- render-element [[태그 & 내용]]
   (let [태그맵 {:큰제목 "h2", :작은제목 "h3", :일반목록 "ul", :숫자목록 "ol"
-                :항목 "li", :인용 "blockquote", :원문 "pre", :문단 "div"
-                :문장 "p", :기울임 "i", :굵게 "em"}
+                :항목 "li", :인용 "blockquote", :원문 "pre", :문단 "p"
+                :기울임 "i", :굵게 "em"}
         추출 (fn [tag] (apply str (some #(= (first %) tag) 내용)))]
     (case 태그
       :빈줄   "<br/>"
