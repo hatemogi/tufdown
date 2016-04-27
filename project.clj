@@ -5,12 +5,24 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.8.40"]
-                 [com.lucasbradstreet/instaparse-cljs "1.4.1.2"]]
+                 [com.lucasbradstreet/instaparse-cljs "1.4.1.2"]
+
+                 [cljsjs/codemirror "5.11.0-1"]
+                 [cljsjs/jquery "2.2.2-0"]]
   :plugins [[lein-cljsbuild "1.1.3"]
             [lein-figwheel "0.5.2"]]
   :cljsbuild
-  {:builds [{:source-paths ["src"]
+  {:builds [{:id "dev"
+             :source-paths ["src"]
+             :figwheel {:on-jsload "tufdown.main/reload-hook" }
              :compiler {:output-to "public/js/main.js"
-                        :optimizations :whitespace
-                        :pretty-print true}}]}
+                        :asset-path "js/out"
+                        :main "tufdown.main"
+                        :optimizations :none
+                        :pretty-print true}}
+            {:id "prod"
+             :source-paths ["src"]
+             :compiler {:output-to "public/js/main.js"
+                        :main "tufdown.main"
+                        :optimizations :advanced}}]}
   :test-paths ["test"])
