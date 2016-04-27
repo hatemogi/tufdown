@@ -13,8 +13,7 @@
   (->> text
        make-string-end-with-LF
        block/parse
-       (insta/transform {:문장 (fn [& chars]
-                                 (span/parse (apply str chars)))})))
+       (insta/transform {:문장 #(span/parse (apply str %&))})))
 
 (declare render-html)
 
