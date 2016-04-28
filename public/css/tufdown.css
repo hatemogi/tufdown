@@ -1,5 +1,27 @@
+@media screen and (min-width:600px) {
+}
+
+html, body, main {
+}
+
+section {
+  width: 50%;
+  height: 100vh;
+  float: left;
+}
+
+section.preview {
+  border-left: 1px solid black;
+}
+
+iframe {
+  border: 0;
+  width: 100%;
+  height: 100%;
+}
+
 textarea#editor {
   width: 100%;
-  height: 300px;
-  display: none;
+  height: 100%;
+  visibility: hidden;
 }

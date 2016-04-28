@@ -23,8 +23,10 @@
   (let [textarea (js/document.getElementById "editor")
         cm (js/CodeMirror.fromTextArea
             textarea
-            #js {:mode "markdown" :lineNumbers true})]
+            #js {:mode "markdown" :lineNumbers true
+                 :autofocus true :theme "neo"
+                 :size #js {:width "100%" :height "100%"}})]
     (reset! editor cm)
-    (.on cm "change" #(js/setTimeout on-change 0))))
+    (.on cm "changes" on-change)))
 
 (aset js/window "onload" -main)

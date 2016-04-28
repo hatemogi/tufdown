@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0, minimum-scale=0.7" name="viewport">
+    <title>미리보기</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css" rel="stylesheet" type="text/css">
+    <link href="css/normalize.css" rel="stylesheet" type="text/css">
+    <link href="tufte-css/tufte.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <article id="article">
+      <h1>터프다운 데모</h1>
+      <p class="subtitle">마크다운 -> Tufte CSS 문서 변환</p>
+      <section>
+        <p>문단도 봅시다.</p>
+      </section>
+      <section>
+        <h2>Tufte CSS</h2>
+        <p>문단도 봅시다. <a href="">Tufte CSS</a>는 간단합니다. <code>CSS</code>로 꾸민 웹문서</p>
+        <pre class="code">&lt;link rel="stylesheet" href="tufte.css"/&gt;</pre>
+        <p>소스코드 인용은 위와 같구요.</p>
+        <blockquote>
+          <p>블럭 인용은 아래와 같습니다.</p>
+          <footer>인용의 푸터는 표현이 애매하겠군요</footer>
+        </blockquote>
+      </section>
+      <section>
+        <p><span class="newthought">마찬가지로 애매한</span> 마크업이 있네요.</p>
+      </section>
+    </article>
+  </body>
+  <script>
+    function replaceArticle(html) {
+      console.log("호출됐어요");
+      console.log(html);
+    }
+  </script>
+</html>
