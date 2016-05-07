@@ -11,3 +11,4 @@ pom.xml.asc
 .hg/
 .cljs_rhino_repl/
 figwheel_server.log
+public/js/out
