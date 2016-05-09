@@ -6,11 +6,18 @@
 
 (enable-console-print!)
 
-(defonce editor (atom nil))
+(defonce editor-content (atom nil))
+(defonce editor-interval (atom nil))
 
-(defn on-change []
-  (let [html (time (t/parse-and-render (.getValue @editor)))]
-    (js/console.log html)))
+(defn renderer []
+  (when-let [content @editor-content]
+    (let [html (time (t/parse-and-render content))]
+      (js/console.log html)
+      (.. js/document
+          (getElementById "preview")
+          -contentWindow
+          (replace_article html)))
+    (reset! editor-content nil)))
 
 (defn reload-hook []
   (js/console.log "리로드!")
@@ -26,7 +33,7 @@
             #js {:mode "markdown" :lineNumbers true
                  :autofocus true :theme "neo"
                  :size #js {:width "100%" :height "100%"}})]
-    (reset! editor cm)
-    (.on cm "changes" on-change)))
+    (.on cm "changes" #(reset! editor-content (.getValue cm))))
+  (reset! editor-interval (js/setInterval renderer 1000)))
 
 (aset js/window "onload" -main)
