@@ -41,6 +41,8 @@
 #_(extract-references
  (parse "[링크]: http://test.com\n[링크2]: http://test2.com \"title\"\n"))
 
+(def ^:dynamic *doc-refs* {})
+
 (declare render-html)
 
 (defn- render-element [[태그 & 내용]]
@@ -63,6 +65,18 @@
            (render-html (추출 :텍스트))
            "</a>")
 
+      :참조링크 ; TODO: 링크 매칭 실패시 원본을 보이는 방법 필요.
+      (if-let [링크정보 (get-in *doc-refs* [:링크 (문자열 :참조이름)])]
+        (str "<a href=\"" (링크정보 :주소)  "\">"
+             (render-html (or (문자열 :텍스트)
+                              (문자열 :참조이름)
+                              (링크정보 :타이틀)))
+             "</a>")
+        "링크 못찾음")
+
+      :각주링크
+      "" ; skip
+
       ;; 기본
       (if-let [tag (태그맵 태그)]
         (str "<" tag ">" (render-html 내용) "</" tag ">")
@@ -76,8 +90,11 @@
     (nil? e)    ""
     :default    (recur (str e))))
 
-(def
-  parse-and-render
-  (comp render-html parse))
+(defn parse-and-render [text]
+  (let [tree (parse text)]
+    (binding [*doc-refs* (extract-references tree)]
+      (render-html tree))))
 
-;;(render-html (parse "[*링*크](http://test.com)"))
+;; (extract-references (parse "[링크][]\n\n[링크]: http://test.com\n"))
+;; (parse-and-render "[링크][]\n\n[링크]: http://test.com\n")
+;; (render-html (parse "[*링*크](http://test.com)"))

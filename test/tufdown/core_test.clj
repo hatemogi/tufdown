@@ -18,4 +18,6 @@
            (extract-references
             [:각주링크
              [:각주이름 "링" "크"]
-             [:각주주소 "h" "t" "t" "p" ":" "/" "/" "t" "e" "s" "t" "." "c" "o" "m"]])))))
+             [:각주주소 "h" "t" "t" "p" ":" "/" "/" "t" "e" "s" "t" "." "c" "o" "m"]])))
+    (is (= "<p><a href=\"http://test.com\">링크</a></p>"
+           (parse-and-render "[링크][]\n\n[링크]: http://test.com\n")))))
