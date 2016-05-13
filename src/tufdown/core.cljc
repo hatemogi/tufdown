@@ -17,7 +17,7 @@
 
 (defn- extract [elements keyword]
   (->> elements
-       (filter vector?)
+       (filter) vector?
        (filter #(= keyword (first %)))))
 
 (def ^:private extract-first
@@ -38,14 +38,14 @@
                                                   :타이틀 (es :링크타이틀)}}))
                         reflinks))}))
 
-#_(extract-references
- (parse "[링크]: http://test.com\n[링크2]: http://test2.com \"title\"\n"))
+(extract-references
 
-(def ^:dynamic *doc-refs* {})
+ (def ^:dynamic *doc-refs* {})
+ (def ^:dynamic *doc-text* "")
 
 (declare render-html)
 
-(defn- render-element [[태그 & 내용]]
+(defn- render-element [[태그 & 내용 :as 요소]]
   (let [태그맵 {:큰제목 "h2", :작은제목 "h3", :일반목록 "ul", :숫자목록 "ol"
                 :항목 "li", :인용 "blockquote", :원문 "pre", :문단 "p"
                 :기울임 "i", :굵게 "em"}
@@ -65,14 +65,16 @@
            (render-html (추출 :텍스트))
            "</a>")
 
-      :참조링크 ; TODO: 링크 매칭 실패시 원본을 보이는 방법 필요.
+      :참조링크
       (if-let [링크정보 (get-in *doc-refs* [:링크 (문자열 :참조이름)])]
         (str "<a href=\"" (링크정보 :주소)  "\">"
              (render-html (or (문자열 :텍스트)
                               (문자열 :참조이름)
                               (링크정보 :타이틀)))
              "</a>")
-        "링크 못찾음")
+        ;; 링크정보 매칭 실패시 원본 그대로 출력
+        (let [[s e] (insta/span 요소)]
+          (.substring *doc-text* s e)))
 
       :각주링크
       "" ; skip
@@ -92,9 +94,13 @@
 
 (defn parse-and-render [text]
   (let [tree (parse text)]
-    (binding [*doc-refs* (extract-references tree)]
+    (binding [*doc-text* text
+              *doc-refs* (extract-references tree)]
       (render-html tree))))
 
+;; (map insta/span (parse "[링크][]\n\n[링크]: http://test.com\n"))
+;; (.substring "test" 1 3)
+
 ;; (extract-references (parse "[링크][]\n\n[링크]: http://test.com\n"))
-;; (parse-and-render "[링크][]\n\n[링크]: http://test.com\n")
+;; (parse-and-render "[링크][]\n\n[링크1]: http://test.com\n")
 ;; (render-html (parse "[*링*크](http://test.com)"))
