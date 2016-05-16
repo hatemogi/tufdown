@@ -31,6 +31,7 @@
         cm (js/CodeMirror.fromTextArea
             textarea
             #js {:mode "markdown" :lineNumbers true
+                 :lineWrapping true
                  :autofocus true :theme "neo"
                  :size #js {:width "100%" :height "100%"}})]
     (.on cm "changes" #(reset! editor-content (.getValue cm))))

@@ -14,10 +14,13 @@
            (parse-and-render "[링크](http://test.com)"))))
 
   (testing "참조 정보 추출"
-    (is (= {:링크 {"링크" {:주소 "http://test.com" :타이틀 nil}}}
-           (extract-references
-            [:각주링크
-             [:각주이름 "링" "크"]
-             [:각주주소 "h" "t" "t" "p" ":" "/" "/" "t" "e" "s" "t" "." "c" "o" "m"]])))
+    (is (= {"링크" {:주소 "http://test.com" :타이틀 nil}}
+           (:링크 (extract-references
+                   [:각주링크
+                    [:각주이름 "링" "크"]
+                    [:각주주소 "h" "t" "t" "p" ":" "/" "/" "t" "e" "s" "t" "." "c" "o" "m"]]))))
+    (is (= {"각주" [:문장 "라" "인" "1"]}
+           (:각주 (extract-references (parse "[^각주]: 라인1\n")))))
+
     (is (= "<p><a href=\"http://test.com\">링크</a></p>"
            (parse-and-render "[링크][]\n\n[링크]: http://test.com\n")))))
