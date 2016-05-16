@@ -10,12 +10,14 @@
     (str text "\n")))
 
 (defn parse [text]
-  (->> text
-       make-str-end-with-LF
-       block/parse
-       (insta/transform {:문장 #(span/parse (apply str %&))})))
+  (let [문장분석 #(span/parse (apply str %&))]
+    (->> text
+         make-str-end-with-LF
+         block/parse
+         (insta/transform {:문장 문장분석})
+         (insta/transform {:링크텍스트 문장분석}))))
 
-;(parse "[^1]: 문단각주 추가\n여러줄에 *걸쳐도* 잘 되겠지요? 움화화\n")
+;(parse "[기본링크](http://test.com)")
 (defn- extract [elements keyword]
   (->> elements
        (filter vector?)
@@ -70,18 +72,22 @@
 
       :일반링크
       (str "<a href=\"" (문자열 :주소) "\">"
-           (render-html (추출 :텍스트))
+           (render-html (추출 :문장))
            "</a>")
 
       :참조링크
       (if-let [링크정보 (get-in *doc-refs* [:링크 (문자열 :참조이름)])]
         (str "<a href=\"" (링크정보 :주소)  "\">"
-             (render-html (or (문자열 :텍스트)
+             (render-html (or (링크정보 :문장)
                               (문자열 :참조이름)
                               (링크정보 :타이틀)))
              "</a>")
         ;; 링크정보 매칭 실패시 원본 그대로 출력
         (요소원문))
+
+      :자동링크
+      (let [링크 (apply str 내용)]
+        (str "<a href=\"" 링크 "\">" 링크 "</a>"))
 
       :측주
       (let [이름 (문자열 :참조이름)]
@@ -99,6 +105,11 @@
 
       :각주문단
       "" ; skip
+
+      :인용
+      (str "<blockquote>"
+           (render-html (map #([:문단 %]) (extract 요소 :문장)))
+           "</blockquote>")
 
       ;; 기본
       (if-let [tag (태그맵 태그)]

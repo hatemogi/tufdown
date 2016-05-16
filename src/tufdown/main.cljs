@@ -33,8 +33,10 @@
             #js {:mode "markdown" :lineNumbers true
                  :lineWrapping true
                  :autofocus true :theme "neo"
-                 :size #js {:width "100%" :height "100%"}})]
-    (.on cm "changes" #(reset! editor-content (.getValue cm))))
+                 :size #js {:width "100%" :height "100%"}})
+        on-change #(reset! editor-content (.getValue cm))]
+    (.on cm "changes" on-change)
+    (on-change))
   (reset! editor-interval (js/setInterval renderer 1000)))
 
 (aset js/window "onload" -main)
