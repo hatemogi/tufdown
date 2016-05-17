@@ -108,7 +108,9 @@
 
       :인용
       (str "<blockquote>"
-           (render-html (map #([:문단 %]) (extract 요소 :문장)))
+           (apply str
+                  (map #(str "<p>" (render-html %) "</p>")
+                       (extract 요소 :문장)))
            "</blockquote>")
 
       ;; 기본

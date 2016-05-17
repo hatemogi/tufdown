@@ -31,4 +31,11 @@ textarea#editor {
 
 .CodeMirror {
   font-size: 1.2em;
+  height: 100%;
+}
+
+.CodeMirror-scroll {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: auto;
 }
