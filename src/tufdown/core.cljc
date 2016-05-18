@@ -15,7 +15,7 @@
          make-str-end-with-LF
          block/parse
          (insta/transform {:문장 문장분석})
-         #_(insta/transform {:링크텍스트 문장분석}))))
+         (insta/transform {:링크텍스트 문장분석}))))
 
 ;(parse "[기본링크](http://test.com)")
 (defn- extract [elements keyword]
@@ -110,6 +110,11 @@
                   (map #(str "<p>" (render-html %) "</p>")
                        (extract 요소 :문장)))
            "</blockquote>")
+
+      :코드
+      (str "<pre class=\"code\">"
+           (render-html 내용)
+           "</pre>")
 
       ;; 기본
       (if-let [tag (태그맵 태그)]
