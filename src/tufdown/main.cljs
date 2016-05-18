@@ -2,6 +2,7 @@
   (:require [tufdown.core :as t]
             [cljsjs.codemirror]
             [cljsjs.codemirror.mode.markdown]
+            [cljsjs.codemirror.mode.gfm]
             [cljsjs.codemirror.keymap.emacs]))
 
 (enable-console-print!)
@@ -12,11 +13,10 @@
 (defn renderer []
   (when-let [content @editor-content]
     (let [html (time (t/parse-and-render content))]
-      (js/console.log html)
-      (.. js/document
-          (getElementById "preview")
-          -contentWindow
-          (replace_article html)))
+      ((goog.object.get (.. js/document
+                             (getElementById "preview")
+                             -contentWindow)
+                        "replace_article") html))
     (reset! editor-content nil)))
 
 (defn reload-hook []

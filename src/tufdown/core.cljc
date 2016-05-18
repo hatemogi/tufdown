@@ -15,7 +15,7 @@
          make-str-end-with-LF
          block/parse
          (insta/transform {:문장 문장분석})
-         (insta/transform {:링크텍스트 문장분석}))))
+         #_(insta/transform {:링크텍스트 문장분석}))))
 
 ;(parse "[기본링크](http://test.com)")
 (defn- extract [elements keyword]
@@ -49,7 +49,6 @@
 (extract-references (parse "[^각주]: 라인1\n라인2"))
 
 (def ^:dynamic *doc-refs* {})
-(def ^:dynamic *doc-text* "")
 
 (declare render-html)
 
@@ -59,8 +58,7 @@
                 :기울임 "i", :굵게 "em"}
         추출   (partial extract-first 내용)
         문자열 (partial extract-str 내용)
-        요소원문 #(let [[s e] (insta/span 요소)]
-                   (.substring *doc-text* s e))]
+        정보없음 #(str "<정보없음: " % ">")]
     (case 태그
       :빈줄   "<br/>"
       :구분줄 "<hr/>"
@@ -83,7 +81,7 @@
                               (링크정보 :타이틀)))
              "</a>")
         ;; 링크정보 매칭 실패시 원본 그대로 출력
-        (요소원문))
+        (정보없음 (문자열 :참조이름)))
 
       :자동링크
       (let [링크 (apply str 내용)]
@@ -98,7 +96,7 @@
                (render-html 각주정보)
                "</span>")
           ;; 각주정보 매칭 실패시 원본 그대로 출력
-          (요소원문)))
+          (정보없음 이름)))
 
       :각주링크
       "" ; skip
@@ -132,8 +130,7 @@
 
 (defn parse-and-render [text]
   (let [tree (parse text)]
-    (binding [*doc-text* text
-              *doc-refs* (extract-references tree)]
+    (binding [*doc-refs* (extract-references tree)]
       (render-html tree))))
 
 ;; (parse "[^각주]붙여 주세요.\n\n[^각주]: 라인1\n라인2\n")
