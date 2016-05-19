@@ -17,7 +17,6 @@
          (insta/transform {:문장 문장분석})
          (insta/transform {:링크텍스트 문장분석}))))
 
-;(parse "[기본링크](http://test.com)")
 (defn- extract [elements keyword]
   (->> elements
        (filter vector?)
@@ -46,8 +45,6 @@
                                 (extract-first e :문장)})
                         ref-paras))}))
 
-(extract-references (parse "[^각주]: 라인1\n라인2"))
-
 (def ^:dynamic *doc-refs* {})
 
 (declare render-html)
@@ -69,15 +66,17 @@
 
       :일반링크
       (str "<a href=\"" (문자열 :주소) "\">"
+
+           (println (추출 :문장))
            (render-html (추출 :문장))
            "</a>")
 
       :참조링크
       (if-let [링크정보 (get-in *doc-refs* [:링크 (문자열 :참조이름)])]
         (str "<a href=\"" (링크정보 :주소)  "\">"
-             (render-html (or (링크정보 :문장)
-                              (문자열 :참조이름)
-                              (링크정보 :타이틀)))
+             (render-html (or (추출 :문장)
+                              (링크정보 :타이틀)
+                              (문자열 :참조이름)))
              "</a>")
         ;; 링크정보 매칭 실패시 원본 그대로 출력
         (정보없음 (문자열 :참조이름)))
@@ -120,9 +119,6 @@
         (str "<" tag ">" (render-html 내용) "</" tag ">")
         (render-html 내용)))))
 
-;; (parse "[>주석]\n\n[>주석]: http://test.com\n")
-;; (extract-references (parse "[>주석]\n\n[>주석]: http://test.com\n"))
-;; (parse-and-render "[>주석]\n\n[>주석]: http://test.com\n")
 
 (defn render-html [e]
   (cond
@@ -136,11 +132,3 @@
   (let [tree (parse text)]
     (binding [*doc-refs* (extract-references tree)]
       (render-html tree))))
-
-;; (parse "[^각주]붙여 주세요.\n\n[^각주]: 라인1\n라인2\n")
-;; (map insta/span (parse "[링크][]\n\n[링크]: http://test.com\n"))
-;; (.substring "test" 1 3)
-
-;; (extract-references (parse "[링크][]\n\n[링크]: http://test.com\n"))
-;; (parse-and-render "[링크][]\n\n[링크1]: http://test.com\n")
-;; (render-html (parse "[*링*크](http://test.com)"))

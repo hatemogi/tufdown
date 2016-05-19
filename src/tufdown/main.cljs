@@ -16,7 +16,6 @@
   (aset w "onmessage"
         (fn [m]
           (let [data (aget m "data")]
-            (js/console.log (aget data "time"))
             (render (aget data "html")))))
   (defonce worker w))
 
@@ -24,9 +23,7 @@
   (.postMessage worker content))
 
 (defn reload-hook []
-  (js/console.log "리로드!")
-  ;(.toTextArea @editor)
-  )
+  (js/console.log "리로드!"))
 
 (defn -main []
   (let [textarea (js/document.getElementById "editor")

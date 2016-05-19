@@ -9,7 +9,7 @@ http://hatemogi.github.io/tufdown/
 ## Self-usage
 
 ``` bash
-$ lein cljsbuild once
+$ lein cljsbuild once prod worker
 $ open public/index.html
 ```
 
