@@ -8,7 +8,7 @@
            (parse "*강조*테스트\n==="))))
 
   (testing "render-html"
-    (is (= "<h2>큰제목</h2>"
+    (is (= "<h1>큰제목</h1>"
            (render-html [:큰제목 "큰" "제" "목"])))
     (is (= "<p><a href=\"http://test.com\">링크</a></p>"
            (parse-and-render "[링크](http://test.com)"))))
