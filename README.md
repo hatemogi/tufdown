@@ -4,6 +4,10 @@
 
 ## Usage
 
+``` bash
+$ lein cljsbuild once
+$ open public/index.html
+```
 
 ## Rationale
 

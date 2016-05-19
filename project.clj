@@ -23,7 +23,6 @@
             {:id "worker"
              :source-paths ["src"]
              :compiler {:output-to "public/js/worker.js"
-                        :asset-path "js/out"
                         :main "tufdown.worker"
                         :optimizations :advanced}}
             {:id "prod"

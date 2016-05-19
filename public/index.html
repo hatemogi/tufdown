@@ -3,28 +3,25 @@
   <head>
     <meta charset="utf-8">
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
-    <meta content="마크다운->Tufte CSS 변환 데모" name="description">
+    <meta content="마크다운 to TufteCSS 데모" name="description">
     <meta content="김대현" name="author">
     <meta content="width=device-width, initial-scale=1, minimum-scale=1" name="viewport">
-    <meta content="" property="og:site_name">
-    <meta content="http://" property="og:url">
-    <meta content="" property="og:title">
+    <meta content="터프다운" property="og:site_name">
+    <meta content="http://hatemogi.github.io/tufdown/" property="og:url">
+    <meta content="마크다운 to TufteCSS 데모" property="og:title">
     <meta content="ko_KR" property="og:locale">
-    <meta content="" property="og:description">
-    <meta content="" property="fb:app_id">
-    <meta content="" property="og:image">
+    <meta content="마크다운 텍스트로부터 간결한 문서를 꾸미기 좋은 Tufte CSS를 써서 웹문서를 만들어 보는 데모입니다." property="og:description">
+    <meta content="1620824834905901" property="fb:app_id">
+    <meta content="http://hatemogi.github.io/tufdown/img/thumbnail-lg.png" property="og:image">
     <meta content="image/png" property="og:image:type">
     <meta content="1200" property="og:image:width">
     <meta content="630" property="og:image:height">
     <meta content="summary" name="twitter:card">
-    <meta content="" name="twitter:site">
-    <meta content="" name="twitter:title">
-    <meta content="" name="twitter:image">
-    <meta content="" name="twitter:description">
+    <meta content="터프다운" name="twitter:site">
+    <meta content="마크다운 to TufteCSS 데모" name="twitter:title">
+    <meta content="http://hatemogi.github.io/tufdown/img/thumbnail-sq.png" name="twitter:image">
+    <meta content="마크다운 텍스트로부터 간결한 문서를 꾸미기 좋은 Tufte CSS를 써서 웹문서를 만들어 보는 데모입니다." name="twitter:description">
     <title>Tufte CSS 변환 데모</title>
-    <link href="" rel="shortcut icon" type="image/png">
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
-    <link href="http://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css" rel="stylesheet" type="text/css">
     <link href="css/normalize.css" rel="stylesheet" type="text/css">
     <link href="css/milligram.min.css" rel="stylesheet" type="text/css">
     <link href="css/codemirror.css" rel="stylesheet" type="text/css">
@@ -44,13 +41,11 @@
 [>터프티]: 데이터 시각화 분야의 창시자, [위키피디아](https://en.wikipedia.org/wiki/Edward_Tufte) 참고
 [>측주]: 측주(sidenote)는 각주의 일종으로 본문 왼쪽이나 오른쪽에 바로 주석을 붙이는 것을 말한다.
 
-그런 터프티의 스타일을, 책 같은 인쇄물이 아니라, 웹페이지로 보기 좋게끔 CSS로 만든 것이 Tufte CSS이다. Tufte CSS는  Dave Liepmann이 만들었는데, 지금은 에드워드 터프티 프로젝트의 하나가 되었다.
-
 첫 문단에서 "에드워드 터프티" 뒤에 작은 숫자 1 표시가 측주를 나타내며, 화면이 충분히 넓은 경우에는 우측에 바로 표시되며, 좁은 경우에는 숫자 표시를 누르면 측주 내용이 펼쳐져 보인다.
 
 # 마크다운으로 Tufte CSS 문서를 만들면 어떨까?
 
-마크다운으로 작성한 텍스트를, Tufte CSS로 꾸민 HTML 문서로 만들어 낼 수 있으면 좋겠다고 생각했으나, 아쉽게도 마크다운에는 측주를 표현하는 문법이 없었다. 찾아보니, 각주 표현을 위해 마크다운 문법을 살짝 확장한 방법을 찾을 수 있었고, 이와 유사한 방법으로 아래처럼 쓸 수 있었다.
+마크다운으로 작성한 텍스트를, Tufte CSS로 꾸민 HTML 문서로 만들어 낼 수 있으면 좋겠다고 생각했다. 그러나 아쉽게도 마크다운에는 측주를 표현하는 문법이 없었다. 찾아보니, 각주 표현을 위해 마크다운 문법을 살짝 확장한 방법을 찾을 수 있었고, 이와 유사한 방법으로 아래처럼 쓸 수 있었다.
 
     마크다운 텍스트[>측주ID]에 측주를 달아보자.
 
@@ -62,13 +57,13 @@
 
 # 데모
 
-그런 착안으로, 마크다운 문법을 조금 확장한 파서를 만들어 보았고, 지금 보는 페이지가 그 데모이다. 에디터 창[>에디터]에서 내용을 편집하면, HTML로 변환된 내용이 거의 바로 표시된다.
+이렇게 마크다운 문법을 조금 확장한 파서를 만들어 보았고, 지금 보는 페이지가 그 데모이다. 에디터 창[>에디터]에서 내용을 편집하면, HTML로 변환된 내용이 거의 바로 표시된다.
 
 [>에디터]: 화면이 넓은 경우 왼쪽에, 좁은 경우에는 위에 위치하도록 했다.
 
 # 감사의 말씀
 
-이 작업에는 [Instaparse](https://github.com/Engelberg/instaparse)라는 훌륭한 클로저용[>clojure] 파서 생성기를 사용했다. 마크다운 분석에 문제가 있거나, Tufte CSS로 보이는 웹페이지 모습이 훌륭치 못하다면, 오롯이 [데모 페이지 개발자](https://medium.com/@hatemogi)의 문제이며, 원작자의 문제는 아니다.
+이 작업에는 [Instaparse][]라는 훌륭한 클로저용[>clojure] 파서 생성기를 사용했다. 마크다운 분석에 문제가 있거나, Tufte CSS로 보이는 웹페이지 모습이 훌륭치 못하다면, 오롯이 [데모 페이지 개발자](https://medium.com/@hatemogi)의 문제이며, 원작자의 문제는 아니다.
 
 [>clojure]: [ClojureScript](https://github.com/clojure/clojurescript)에서도 쓸 수 있어서, 이 페이지 처럼 JavaScript로도 시연할 수 있다.
 

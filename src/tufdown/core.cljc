@@ -53,7 +53,7 @@
 (declare render-html)
 
 (defn- render-element [[태그 & 내용 :as 요소]]
-  (let [태그맵 {:큰제목 "h2", :작은제목 "h3", :일반목록 "ul", :숫자목록 "ol",
+  (let [태그맵 {:큰제목 "h1", :작은제목 "h2", :일반목록 "ul", :숫자목록 "ol",
                 :코드 "code" :항목 "li", :문단 "p", :기울임 "i", :굵게 "b"}
         추출   (partial extract-first 내용)
         문자열 (partial extract-str 내용)
