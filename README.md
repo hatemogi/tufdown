@@ -1,8 +1,12 @@
-# instaparse-practice
+# Tufdown
 
 > THIS IS FOR PERSONAL LEARNING AND NOT MEANT TO BE USED BY OTHERS YET.
 
-## Usage
+## DEMO
+
+http://hatemogi.github.io/tufdown/
+
+## Self-usage
 
 ``` bash
 $ lein cljsbuild once
