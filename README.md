@@ -9,7 +9,7 @@ http://hatemogi.github.io/tufdown/
 ## Self-usage
 
 ``` bash
-$ lein cljsbuild once prod worker
+$ lein cljsbuild once main worker
 $ open public/index.html
 ```
 
@@ -18,13 +18,9 @@ $ open public/index.html
 * [합리화와 사전조사](https://medium.com/happyprogrammer-in-jeju/마크다운-파서-만들기-1-합리화와-사전조사-932a269b7233)
 * [인스타파서 연습](https://medium.com/happyprogrammer-in-jeju/마크다운-파서-만들기-2-인스타파서-연습-12b2291a9f8b)
 
-## 해결할 것
+## Status
 
-* 블럭/스팬 나눠서 돌리니, instaparse/span의 메타정보가 어긋남. 원래 메타정보를 더하는 방법은?
-  ```
-  => (meta (as-and-bs "aaaaabbbaaaabb"))
-  {:instaparse.gll/start-index 0, :instaparse.gll/end-index 14}
-  ```
+매우 기본적인 데모용도로만 동작하고 있으며, 제한적인 마크다운 문법을 지원함.
 
 ## License
 

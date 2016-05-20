@@ -1,5 +1,6 @@
 (ns tufdown.main
-  (:require [cljsjs.codemirror]
+  (:require [tufdown.core :as t]
+            [cljsjs.codemirror]
             [cljsjs.codemirror.mode.markdown]
             [cljsjs.codemirror.mode.gfm]
             [cljsjs.codemirror.keymap.emacs]))
@@ -16,11 +17,15 @@
   (aset w "onmessage"
         (fn [m]
           (let [data (aget m "data")]
+            (js/console.log (aget data "time"))
             (render (aget data "html")))))
   (defonce worker w))
 
 (defn delegate-work [content]
   (.postMessage worker content))
+
+(defn- render-now [text]
+  (render (time (t/parse-and-render text))))
 
 (defn reload-hook []
   (js/console.log "리로드!"))
@@ -33,6 +38,7 @@
                  :lineWrapping true
                  :autofocus true :theme "neo"
                  :size #js {:width "100%" :height "100%"}})
+        on-change #(render-now (.getValue cm))
         on-change #(delegate-work (.getValue cm))]
     (.on cm "change" on-change)
     (on-change)))

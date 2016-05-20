@@ -10,7 +10,7 @@
     (str text "\n")))
 
 (defn parse [text]
-  (let [문장분석 #(span/parse (apply str %&))]
+  (let [문장분석 #(span/parse %)]
     (->> text
          make-str-end-with-LF
          block/parse
@@ -18,9 +18,9 @@
          (insta/transform {:링크텍스트 문장분석}))))
 
 (defn- extract [elements keyword]
-  (->> elements
-       (filter vector?)
-       (filter #(= keyword (first %)))))
+  (filter (fn [e] (and (vector? e)
+                      (= keyword (first e))))
+          elements))
 
 (def ^:private extract-first
   (comp first extract))
@@ -45,6 +45,7 @@
                                 (extract-first e :문장)})
                         ref-paras))}))
 
+
 (def ^:dynamic *doc-refs* {})
 
 (declare render-html)
@@ -66,8 +67,6 @@
 
       :일반링크
       (str "<a href=\"" (문자열 :주소) "\">"
-
-           (println (추출 :문장))
            (render-html (추출 :문장))
            "</a>")
 
@@ -118,7 +117,6 @@
       (if-let [tag (태그맵 태그)]
         (str "<" tag ">" (render-html 내용) "</" tag ">")
         (render-html 내용)))))
-
 
 (defn render-html [e]
   (cond

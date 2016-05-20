@@ -25,7 +25,7 @@
              :compiler {:output-to "public/js/worker.js"
                         :main "tufdown.worker"
                         :optimizations :advanced}}
-            {:id "prod"
+            {:id "main"
              :source-paths ["src"]
              :compiler {:output-to "public/js/main.js"
                         :main "tufdown.main"

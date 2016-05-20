@@ -1,37 +1,3 @@
-<!DOCTYPE html>
-<html lang="ko">
-  <head>
-    <meta charset="utf-8">
-    <meta content="IE=edge" http-equiv="X-UA-Compatible">
-    <meta content="마크다운 to TufteCSS 데모" name="description">
-    <meta content="김대현" name="author">
-    <meta content="width=device-width, initial-scale=1, minimum-scale=1" name="viewport">
-    <meta content="터프다운" property="og:site_name">
-    <meta content="http://hatemogi.github.io/tufdown/" property="og:url">
-    <meta content="마크다운 to TufteCSS 데모" property="og:title">
-    <meta content="ko_KR" property="og:locale">
-    <meta content="마크다운 텍스트로부터 간결한 문서를 꾸미기 좋은 Tufte CSS를 써서 웹문서를 만들어 보는 데모입니다." property="og:description">
-    <meta content="1620824834905901" property="fb:app_id">
-    <meta content="http://hatemogi.github.io/tufdown/img/thumbnail-lg.png" property="og:image">
-    <meta content="image/png" property="og:image:type">
-    <meta content="1200" property="og:image:width">
-    <meta content="630" property="og:image:height">
-    <meta content="summary" name="twitter:card">
-    <meta content="터프다운" name="twitter:site">
-    <meta content="마크다운 to TufteCSS 데모" name="twitter:title">
-    <meta content="http://hatemogi.github.io/tufdown/img/thumbnail-sq.png" name="twitter:image">
-    <meta content="마크다운 텍스트로부터 간결한 문서를 꾸미기 좋은 Tufte CSS를 써서 웹문서를 만들어 보는 데모입니다." name="twitter:description">
-    <title>Tufte CSS 변환 데모</title>
-    <link href="css/normalize.css" rel="stylesheet" type="text/css">
-    <link href="css/milligram.min.css" rel="stylesheet" type="text/css">
-    <link href="css/codemirror.css" rel="stylesheet" type="text/css">
-    <link href="css/theme/neo.css" rel="stylesheet" type="text/css">
-    <link href="css/tufdown.css" rel="stylesheet" type="text/css">
-  </head>
-  <body>
-    <main>
-      <section class="editor">
-        <textarea id="editor">
 # 마크다운 to [Tufte CSS][] 데모
 
 > 직접 내용을 편집해 보세요~
@@ -79,15 +45,5 @@
 
 마크다운의 문법을 조금 확장해서, Tufte CSS의 측주를 표현하는 파서를 만들어 봤다. 실험적으로 만들었고, 기본적인 처리에 측추 처리를 덧붙인 것에 불과하지만, 나머지 Tufte CSS를 위한 처리도 어렵지 않게 구현할 수 있을 것으로 보인다.
 
-
 [Instaparse]: https://github.com/Engelberg/instaparse
 [Tufte CSS]: https://edwardtufte.github.io/tufte-css/
-</textarea>
-      </section>
-      <section class="preview">
-        <iframe id="preview" src="preview.html" scrolling="yes"></iframe>
-      </section>
-    </main>
-    <script src="js/main.js" type="text/javascript"></script>
-  </body>
-</html>
