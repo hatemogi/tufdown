@@ -18,9 +18,9 @@
          (insta/transform {:링크텍스트 문장분석}))))
 
 (defn- extract [elements keyword]
-  (filter (fn [e] (and (vector? e)
-                      (= keyword (first e))))
-          elements))
+  (->> elements
+       (filter vector?)
+       (filter #(= keyword (first %)))))
 
 (def ^:private extract-first
   (comp first extract))

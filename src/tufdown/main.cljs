@@ -1,9 +1,6 @@
 (ns tufdown.main
-  (:require [tufdown.core :as t]
-            [cljsjs.codemirror]
-            [cljsjs.codemirror.mode.markdown]
-            [cljsjs.codemirror.mode.gfm]
-            [cljsjs.codemirror.keymap.emacs]))
+  (:require [cljsjs.codemirror]
+            [cljsjs.codemirror.mode.markdown]))
 
 (enable-console-print!)
 
@@ -24,12 +21,6 @@
 (defn delegate-work [content]
   (.postMessage worker content))
 
-(defn- render-now [text]
-  (render (time (t/parse-and-render text))))
-
-(defn reload-hook []
-  (js/console.log "리로드!"))
-
 (defn -main []
   (let [textarea (js/document.getElementById "editor")
         cm (js/CodeMirror.fromTextArea
@@ -38,9 +29,8 @@
                  :lineWrapping true
                  :autofocus true :theme "neo"
                  :size #js {:width "100%" :height "100%"}})
-        on-change #(render-now (.getValue cm))
         on-change #(delegate-work (.getValue cm))]
-    (.on cm "change" on-change)
+    (.on cm "changes" on-change)
     (on-change)))
 
 (aset js/window "onload" -main)

@@ -7,14 +7,13 @@
                  [org.clojure/clojurescript "1.8.40"]
                  [com.lucasbradstreet/instaparse-cljs "1.4.1.2"]
 
-                 [cljsjs/codemirror "5.11.0-1"]
-                 [cljsjs/jquery "2.2.2-0"]]
+                 [cljsjs/codemirror "5.11.0-1"]]
   :plugins [[lein-cljsbuild "1.1.3"]
             [lein-figwheel "0.5.2"]]
   :cljsbuild
   {:builds [{:id "dev"
              :source-paths ["src"]
-             :figwheel {:on-jsload "tufdown.main/reload-hook" }
+             :figwheel true
              :compiler {:output-to "public/js/main.js"
                         :asset-path "js/out"
                         :main "tufdown.main"
